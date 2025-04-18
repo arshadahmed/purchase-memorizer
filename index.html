@@ -18,17 +18,18 @@
   </header>
 
   <!-- Home Section -->
-  <section id="home-section" class="section">
-    <h2>Recent Items</h2>
+  <section id="home-section" class="section hidden">
+    <h2>Home</h2>
+    <p class="placeholder">Hi Sam &amp; Arsh, Welcome to your personal App to keep track of any and every thing.</p>
+  </section>
+
+  <!-- My Items Section -->
+  <section id="my-items-section" class="section">
+    <h2>My Items</h2>
+    <input type="text" id="filterInput" class="filter-input" placeholder="Search by name or shop...">
     <div id="recentList" class="item-list">
       <p class="placeholder">No items yet.</p>
     </div>
-  </section>
-
-  <!-- History Section -->
-  <section id="history-section" class="section hidden">
-    <h2>History</h2>
-    <p class="placeholder">No history to show.</p>
   </section>
 
   <!-- Add Section -->
@@ -89,8 +90,8 @@
 
   <!-- Bottom Navigation -->
   <nav class="bottom-nav" aria-label="Main Navigation">
-    <button id="tab-home"    class="tab" aria-current="page">Home</button>
-    <button id="tab-history" class="tab">History</button>
+    <button id="tab-home"    class="tab">Home</button>
+    <button id="tab-my-items" class="tab" aria-current="page">My Items</button>
     <button id="tab-add"     class="tab">Add</button>
     <button id="tab-settings"class="tab">Settings</button>
   </nav>
