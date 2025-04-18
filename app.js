@@ -1,138 +1,153 @@
-// Elements for tabs and sections
-const homeTab = document.getElementById('tab-home');
-const historyTab = document.getElementById('tab-history');
-const settingsTab = document.getElementById('tab-settings');
-const tabs = [homeTab, historyTab, settingsTab];
+// iOS bottom-bar hide hack for in-browser testing
+window.addEventListener('load', () => {
+  setTimeout(() => window.scrollTo(0, 1), 0);
+});
 
-const homeSection = document.getElementById('home-section');
-const historySection = document.getElementById('history-section');
-const settingsSection = document.getElementById('settings-section');
-const sections = {
-  'home': homeSection,
-  'history': historySection,
-  'settings': settingsSection
+const tabs = {
+  home:    document.getElementById('tab-home'),
+  history: document.getElementById('tab-history'),
+  settings:document.getElementById('tab-settings')
 };
+const sections = {
+  home:    document.getElementById('home-section'),
+  history: document.getElementById('history-section'),
+  settings:document.getElementById('settings-section')
+};
+const addButton    = document.getElementById('addButton'),
+      formOverlay  = document.getElementById('formOverlay'),
+      itemForm     = document.getElementById('itemForm'),
+      cancelButton = document.getElementById('cancelButton');
 
-// Floating add button and form overlay elements
-const addButton = document.getElementById('addButton');
-const formOverlay = document.getElementById('formOverlay');
-const itemForm = document.getElementById('itemForm');
-const cancelButton = document.getElementById('cancelButton');
-
-// Install PWA button
-const installButton = document.getElementById('installButton');
-
-// Data store for items (recent items list)
 let items = [];
+let editIndex = null;
 
-// Function to switch tabs and show the corresponding section
-function showSection(sectionId) {
-  // Hide all sections and remove active state from all tabs
-  for (let key in sections) {
-    sections[key].classList.add('hidden');
-  }
-  tabs.forEach(tab => tab.removeAttribute('aria-current'));
-  
-  // Show the selected section and mark current tab
-  sections[sectionId].classList.remove('hidden');
-  const currentTab = document.getElementById(`tab-${sectionId}`);
-  currentTab.setAttribute('aria-current', 'page');
+// Tab switching
+function showSection(id) {
+  Object.values(sections).forEach(sec => sec.classList.add('hidden'));
+  Object.values(tabs).forEach(tab => tab.removeAttribute('aria-current'));
+  sections[id].classList.remove('hidden');
+  tabs[id].setAttribute('aria-current', 'page');
 }
+Object.keys(tabs).forEach(id =>
+  tabs[id].addEventListener('click', () => showSection(id))
+);
 
-// Tab button event handlers
-homeTab.addEventListener('click', () => showSection('home'));
-historyTab.addEventListener('click', () => showSection('history'));
-settingsTab.addEventListener('click', () => showSection('settings'));
-
-// Show the form overlay when + button is clicked
+// Open form (add or edit)
 addButton.addEventListener('click', () => {
+  editIndex = null;
+  document.getElementById('formTitle').textContent = 'Add Purchase';
   formOverlay.classList.remove('hidden');
-  // If currently in History or Settings, switch to Home in background (so new item will be visible in Home)
-  showSection('home');
-  // Optionally, focus the first input for accessibility
   document.getElementById('itemName').focus();
 });
 
-// Hide the form overlay on cancel or outside click
+// Cancel / close form
 cancelButton.addEventListener('click', () => {
   formOverlay.classList.add('hidden');
   itemForm.reset();
+  showSection('home');
 });
-formOverlay.addEventListener('click', (e) => {
-  if (e.target.id === 'formOverlay') {  // clicked outside the form content
+formOverlay.addEventListener('click', e => {
+  if (e.target.id === 'formOverlay') {
     formOverlay.classList.add('hidden');
     itemForm.reset();
+    showSection('home');
   }
 });
 
-// Handle form submission to add a new item
-itemForm.addEventListener('submit', (e) => {
+// Save (add or update)
+itemForm.addEventListener('submit', async e => {
   e.preventDefault();
-  // Get form data
-  const name = document.getElementById('itemName').value.trim();
-  const details = document.getElementById('itemDetails').value.trim();
-  if (name === '') return;  // no name, do nothing
+  const data = {
+    name:     document.getElementById('itemName').value.trim(),
+    shop:     document.getElementById('shopName').value.trim(),
+    address:  document.getElementById('shopAddress').value.trim(),
+    date:     document.getElementById('itemDate').value,
+    category: document.getElementById('itemCategory').value,
+    warranty: document.getElementById('itemWarranty').value,
+    details:  document.getElementById('itemDetails').value.trim(),
+    receipt:  null
+  };
+  const receiptFile = document.getElementById('itemReceipt').files[0];
+  if (receiptFile) {
+    data.receipt = await new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.readAsDataURL(receiptFile);
+    });
+  }
 
-  // Add new item to the beginning of the list
-  items.unshift({ name, details });
-  updateRecentList();
+  if (editIndex !== null) {
+    items[editIndex] = data;
+  } else {
+    items.unshift(data);
+  }
 
-  // Reset and hide the form
+  updateRecent();
   itemForm.reset();
   formOverlay.classList.add('hidden');
-  // Ensure Home tab is active to show the new item
   showSection('home');
 });
 
-// Update the Home section's recent items list in the UI
-function updateRecentList() {
-  const listContainer = document.getElementById('recentList');
-  if (items.length === 0) {
-    // If no items, show placeholder text
-    listContainer.innerHTML = '<p class="placeholder">No items yet.</p>';
-  } else {
-    // Build HTML for each item card
-    let listHTML = '';
-    items.forEach(item => {
-      listHTML += 
-        `<div class="card">
-           <div class="item-title">${item.name}</div>
-           ${item.details ? `<div class="item-desc">${item.details}</div>` : ''}
-         </div>`;
-    });
-    listContainer.innerHTML = listHTML;
+// Render cards
+function updateRecent() {
+  const list = document.getElementById('recentList');
+  if (!items.length) {
+    list.innerHTML = '<p class="placeholder">No items yet.</p>';
+    return;
   }
+  list.innerHTML = items.map((it, idx) => `
+    <div class="card">
+      <div class="actions">
+        <button title="Edit"   onclick="startEdit(${idx})"><img src="icons/edit.png"   alt="Edit"></button>
+        <button title="Delete" onclick="deleteItem(${idx})"><img src="icons/delete.png" alt="Delete"></button>
+      </div>
+      <div class="item-title">${it.name}</div>
+      <div class="item-meta">Shop: ${it.shop}</div>
+      <div class="item-meta">${it.address}</div>
+      <div class="item-meta">${it.date} • ${it.category} • Warranty: ${it.warranty}</div>
+      ${it.details ? `<div class="item-desc">${it.details}</div>` : ''}
+      ${it.receipt ? `<img src="${it.receipt}" alt="Receipt">` : ''}
+    </div>
+  `).join('');
 }
 
-// PWA install prompt handling
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', (e) => {
+// Edit & delete handlers
+window.startEdit = idx => {
+  const it = items[idx];
+  editIndex = idx;
+  document.getElementById('formTitle').textContent = 'Edit Purchase';
+  document.getElementById('itemName').value     = it.name;
+  document.getElementById('shopName').value     = it.shop;
+  document.getElementById('shopAddress').value  = it.address;
+  document.getElementById('itemDate').value     = it.date;
+  document.getElementById('itemCategory').value = it.category;
+  document.getElementById('itemWarranty').value = it.warranty;
+  document.getElementById('itemDetails').value  = it.details;
+  formOverlay.classList.remove('hidden');
+};
+
+window.deleteItem = idx => {
+  if (confirm('Delete this item?')) {
+    items.splice(idx, 1);
+    updateRecent();
+  }
+};
+
+// PWA install prompt
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredPrompt = e;
-  // Show the install button when prompt is available
-  installButton.classList.remove('hidden');
+  document.getElementById('installButton').classList.remove('hidden');
 });
-
-installButton.addEventListener('click', async () => {
+document.getElementById('installButton').addEventListener('click', async () => {
   if (!deferredPrompt) return;
-  // Show browser install prompt
   deferredPrompt.prompt();
-  const choice = await deferredPrompt.userChoice;
-  if (choice.outcome === 'accepted') {
-    console.log('PWA installation accepted');
-  } else {
-    console.log('PWA installation dismissed');
-  }
-  // Hide the install button after user makes a choice
+  await deferredPrompt.userChoice;
   deferredPrompt = null;
-  installButton.classList.add('hidden');
+  document.getElementById('installButton').classList.add('hidden');
 });
 
-// (Optional) Handle the appinstalled event to confirm installation
-window.addEventListener('appinstalled', () => {
-  console.log('PWA was installed');
-});
-
-// Initialize: ensure only Home section is visible at start
+// Initialize
 showSection('home');
-updateRecentList();
+updateRecent();

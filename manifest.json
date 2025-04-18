@@ -2,7 +2,7 @@
   "name": "Purchase Tracker",
   "short_name": "PurchTracker",
   "start_url": "/",
-  "display": "fullscreen",
+  "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#6200ee",
   "icons": [

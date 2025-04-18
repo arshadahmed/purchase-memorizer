@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Sam & Arsh Family - Purchase Tracker</title>
+  <title>Sam & Arsh Family – Purchase Tracker</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#6200ee" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -12,13 +12,13 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- App Header -->
+  <!-- Header -->
   <header class="app-header">
     <img src="icons/icon-192.png" alt="Logo" class="app-logo">
     <span class="app-title">Sam &amp; Arsh Family</span>
   </header>
 
-  <!-- Home Tab -->
+  <!-- Home -->
   <section id="home-section" class="section">
     <h2>Recent Items</h2>
     <div id="recentList" class="item-list">
@@ -26,19 +26,19 @@
     </div>
   </section>
 
-  <!-- History Tab -->
+  <!-- History -->
   <section id="history-section" class="section hidden">
     <h2>History</h2>
     <p class="placeholder">No history to show.</p>
   </section>
 
-  <!-- Settings Tab -->
+  <!-- Settings -->
   <section id="settings-section" class="section hidden">
     <h2>Settings</h2>
     <button id="installButton" class="btn primary hidden">Install App</button>
   </section>
 
-  <!-- Bottom Navigation + FAB -->
+  <!-- Bottom Nav + FAB -->
   <nav class="bottom-nav" aria-label="Main Navigation">
     <button id="tab-home" class="tab" aria-current="page">Home</button>
     <button id="tab-history" class="tab">History</button>
@@ -46,25 +46,36 @@
     <button id="addButton" class="fab" aria-label="Add new item">+</button>
   </nav>
 
-  <!-- Add/Edit Purchase Overlay -->
+  <!-- Form Overlay -->
   <div id="formOverlay" class="overlay hidden">
     <div class="overlay-content">
       <h2 id="formTitle">Add Purchase</h2>
       <form id="itemForm">
-        <input type="text" id="itemName" placeholder="Item name" required />
-        <input type="text" id="shopName" placeholder="Shop name" required />
-        <input type="text" id="shopAddress" placeholder="Shop address" required />
+        <label for="itemName">Item Name</label>
+        <input type="text" id="itemName" placeholder="Enter item name" required />
+
+        <label for="shopName">Shop Name</label>
+        <input type="text" id="shopName" placeholder="Enter shop name" required />
+
+        <label for="shopAddress">Shop Address</label>
+        <input type="text" id="shopAddress" placeholder="Enter shop address" required />
+
+        <label for="itemDate">Purchase Date</label>
         <input type="date" id="itemDate" required />
+
+        <label for="itemCategory">Category</label>
         <select id="itemCategory" required>
-          <option value="" disabled>Category</option>
+          <option value="" disabled selected>— Select category —</option>
           <option value="Food">Food</option>
           <option value="Transport">Transport</option>
           <option value="Utilities">Utilities</option>
           <option value="Shopping">Shopping</option>
           <option value="Other">Other</option>
         </select>
+
+        <label for="itemWarranty">Warranty Period</label>
         <select id="itemWarranty" required>
-          <option value="" disabled>Warranty Period</option>
+          <option value="" disabled selected>— Select warranty —</option>
           <option value="1y">1 year</option>
           <option value="2y">2 years</option>
           <option value="3y">3 years</option>
@@ -72,8 +83,13 @@
           <option value="5y">5 years</option>
           <option value="6y">6 years</option>
         </select>
+
+        <label for="itemReceipt">Receipt (optional)</label>
         <input type="file" id="itemReceipt" accept="image/*,.pdf" />
-        <textarea id="itemDetails" placeholder="Details (optional)"></textarea>
+
+        <label for="itemDetails">Details (optional)</label>
+        <textarea id="itemDetails" placeholder="Enter any additional details"></textarea>
+
         <div class="form-actions">
           <button type="button" id="cancelButton" class="btn secondary">Cancel</button>
           <button type="submit" class="btn primary">Save</button>
