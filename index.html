@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Tracker</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Purchase Tracker</h1>
+  <form id="itemForm">
+    <input type="text" id="store" placeholder="Store" required>
+    <input type="date" id="date" required>
+    <input type="number" id="amount" placeholder="Amount" step="0.01" required>
+    <input type="file" id="receipt" accept="image/*,.pdf">
+    <button type="submit">Add Item</button>
+  </form>
+  <ul id="itemsList"></ul>
+  <script src="/app.js"></script>
+</body>
+</html>

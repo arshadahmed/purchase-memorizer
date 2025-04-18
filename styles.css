@@ -1,0 +1,16 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  color: #333;
+}
+form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+button { background: #0072C6; color: #fff; border: none; padding: 8px; cursor: pointer; }
+button:hover { background: #005A9E; }
+ul { list-style: none; padding: 0; }
+li { padding: 10px; border-bottom: 1px solid #ddd; }
+li img { max-width: 100px; display: block; margin-top: 5px; }
