@@ -12,13 +12,11 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Header -->
   <header class="app-header">
     <img src="icons/icon-192.png" alt="Logo" class="app-logo">
     <span class="app-title">Sam &amp; Arsh Family</span>
   </header>
 
-  <!-- Home -->
   <section id="home-section" class="section">
     <h2>Recent Items</h2>
     <div id="recentList" class="item-list">
@@ -26,27 +24,23 @@
     </div>
   </section>
 
-  <!-- History -->
   <section id="history-section" class="section hidden">
     <h2>History</h2>
     <p class="placeholder">No history to show.</p>
   </section>
 
-  <!-- Settings -->
   <section id="settings-section" class="section hidden">
     <h2>Settings</h2>
     <button id="installButton" class="btn primary hidden">Install App</button>
   </section>
 
-  <!-- Bottom Nav + FAB -->
   <nav class="bottom-nav" aria-label="Main Navigation">
-    <button id="tab-home" class="tab" aria-current="page">Home</button>
+    <button id="tab-home"    class="tab" aria-current="page">Home</button>
     <button id="tab-history" class="tab">History</button>
-    <button id="tab-settings" class="tab">Settings</button>
-    <button id="addButton" class="fab" aria-label="Add new item">+</button>
+    <button id="tab-settings"class="tab">Settings</button>
+    <button id="addButton"   class="fab">+</button>
   </nav>
 
-  <!-- Form Overlay -->
   <div id="formOverlay" class="overlay hidden">
     <div class="overlay-content">
       <h2 id="formTitle">Add Purchase</h2>
