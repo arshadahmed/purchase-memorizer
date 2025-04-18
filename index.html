@@ -1,22 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Purchase Tracker</title>
-  <link rel="manifest" href="/manifest.json">
-  <link rel="stylesheet" href="/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PWA App</title>
+  <!-- PWA manifest and theme (unchanged) -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+  <!-- Stylesheet link -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Purchase Tracker</h1>
-  <form id="itemForm">
-    <input type="text" id="store" placeholder="Store" required>
-    <input type="date" id="date" required>
-    <input type="number" id="amount" placeholder="Amount" step="0.01" required>
-    <input type="file" id="receipt" accept="image/*,.pdf">
-    <button type="submit">Add Item</button>
-  </form>
-  <ul id="itemsList"></ul>
-  <script src="/app.js"></script>
+
+  <!-- Home Section (default visible tab) -->
+  <section id="home-section" class="section" aria-label="Home">
+    <h2>Recent Items</h2>
+    <div id="recentList" class="item-list">
+      <p class="placeholder">No items yet.</p>
+    </div>
+  </section>
+
+  <!-- History Section (hidden by default) -->
+  <section id="history-section" class="section hidden" aria-label="History">
+    <h2>History</h2>
+    <p class="placeholder">No history to show.</p>
+  </section>
+
+  <!-- Settings Section (hidden by default) -->
+  <section id="settings-section" class="section hidden" aria-label="Settings">
+    <h2>Settings</h2>
+    <!-- PWA install button (shown when available) -->
+    <button id="installButton" class="btn primary hidden">📲 Install App</button>
+  </section>
+
+  <!-- Bottom Navigation Bar with Tabs -->
+  <nav class="bottom-nav" aria-label="Main Navigation">
+    <button id="tab-home" class="tab" aria-current="page">Home</button>
+    <button id="tab-history" class="tab">History</button>
+    <button id="tab-settings" class="tab">Settings</button>
+    <!-- Floating Add (+) Button -->
+    <button id="addButton" class="fab" aria-label="Add new item">+</button>
+    <!-- The above FAB is positioned in the center of the nav bar via CSS -->
+  </nav>
+
+  <!-- Overlay for "Add New Item" Form (hidden by default) -->
+  <div id="formOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+    <div class="overlay-content">
+      <h2 id="formTitle">Add New Item</h2>
+      <form id="itemForm">
+        <input type="text" id="itemName" name="name" placeholder="Item name" required />
+        <textarea id="itemDetails" name="details" placeholder="Details (optional)"></textarea>
+        <div class="form-actions">
+          <button type="button" id="cancelButton" class="btn secondary">Cancel</button>
+          <button type="submit" class="btn primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main script file -->
+  <script src="app.js"></script>
 </body>
 </html>
