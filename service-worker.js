@@ -1,24 +1,16 @@
-const CACHE_NAME = 'purchase-tracker-v1';
+const CACHE_NAME = 'purchase-tracker-v6';
 const URLS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/app.js',
-  '/manifest.json',
-  '/fallback.png'
+  '/', '/index.html', '/styles.css', '/app.js', '/manifest.json', '/fallback.png'
 ];
 
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(URLS_TO_CACHE))
-  );
-});
+self.addEventListener('install', e =>
+  e.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(URLS_TO_CACHE)))
+);
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
+self.addEventListener('fetch', e =>
+  e.respondWith(
+    caches.match(e.request)
+      .then(res => res || fetch(e.request))
       .catch(() => caches.match('/fallback.png'))
-  );
-});
+  )
+);

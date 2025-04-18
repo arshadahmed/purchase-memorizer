@@ -1,55 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-scroll">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PWA App</title>
-  <!-- PWA manifest and theme (unchanged) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Sam & Arsh Family - Purchase Tracker</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#ffffff" />
-  <!-- Stylesheet link -->
+  <meta name="theme-color" content="#6200ee" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- App Header -->
+  <header class="app-header">
+    <img src="icons/icon-192.png" alt="Logo" class="app-logo">
+    <span class="app-title">Sam &amp; Arsh Family</span>
+  </header>
 
-  <!-- Home Section (default visible tab) -->
-  <section id="home-section" class="section" aria-label="Home">
+  <!-- Home Tab -->
+  <section id="home-section" class="section">
     <h2>Recent Items</h2>
     <div id="recentList" class="item-list">
       <p class="placeholder">No items yet.</p>
     </div>
   </section>
 
-  <!-- History Section (hidden by default) -->
-  <section id="history-section" class="section hidden" aria-label="History">
+  <!-- History Tab -->
+  <section id="history-section" class="section hidden">
     <h2>History</h2>
     <p class="placeholder">No history to show.</p>
   </section>
 
-  <!-- Settings Section (hidden by default) -->
-  <section id="settings-section" class="section hidden" aria-label="Settings">
+  <!-- Settings Tab -->
+  <section id="settings-section" class="section hidden">
     <h2>Settings</h2>
-    <!-- PWA install button (shown when available) -->
-    <button id="installButton" class="btn primary hidden">📲 Install App</button>
+    <button id="installButton" class="btn primary hidden">Install App</button>
   </section>
 
-  <!-- Bottom Navigation Bar with Tabs -->
+  <!-- Bottom Navigation + FAB -->
   <nav class="bottom-nav" aria-label="Main Navigation">
     <button id="tab-home" class="tab" aria-current="page">Home</button>
     <button id="tab-history" class="tab">History</button>
     <button id="tab-settings" class="tab">Settings</button>
-    <!-- Floating Add (+) Button -->
     <button id="addButton" class="fab" aria-label="Add new item">+</button>
-    <!-- The above FAB is positioned in the center of the nav bar via CSS -->
   </nav>
 
-  <!-- Overlay for "Add New Item" Form (hidden by default) -->
-  <div id="formOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+  <!-- Add/Edit Purchase Overlay -->
+  <div id="formOverlay" class="overlay hidden">
     <div class="overlay-content">
-      <h2 id="formTitle">Add New Item</h2>
+      <h2 id="formTitle">Add Purchase</h2>
       <form id="itemForm">
-        <input type="text" id="itemName" name="name" placeholder="Item name" required />
-        <textarea id="itemDetails" name="details" placeholder="Details (optional)"></textarea>
+        <input type="text" id="itemName" placeholder="Item name" required />
+        <input type="text" id="shopName" placeholder="Shop name" required />
+        <input type="text" id="shopAddress" placeholder="Shop address" required />
+        <input type="date" id="itemDate" required />
+        <select id="itemCategory" required>
+          <option value="" disabled>Category</option>
+          <option value="Food">Food</option>
+          <option value="Transport">Transport</option>
+          <option value="Utilities">Utilities</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Other">Other</option>
+        </select>
+        <select id="itemWarranty" required>
+          <option value="" disabled>Warranty Period</option>
+          <option value="1y">1 year</option>
+          <option value="2y">2 years</option>
+          <option value="3y">3 years</option>
+          <option value="4y">4 years</option>
+          <option value="5y">5 years</option>
+          <option value="6y">6 years</option>
+        </select>
+        <input type="file" id="itemReceipt" accept="image/*,.pdf" />
+        <textarea id="itemDetails" placeholder="Details (optional)"></textarea>
         <div class="form-actions">
           <button type="button" id="cancelButton" class="btn secondary">Cancel</button>
           <button type="submit" class="btn primary">Save</button>
@@ -58,7 +82,6 @@
     </div>
   </div>
 
-  <!-- Main script file -->
   <script src="app.js"></script>
 </body>
 </html>
