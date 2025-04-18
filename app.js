@@ -1,25 +1,37 @@
-const addButton    = document.getElementById('addButton');
-const closeOverlay = document.getElementById('closeOverlay');
-const formOverlay  = document.getElementById('formOverlay');
+const tabs = {
+  home:     document.getElementById('tab-home'),
+  history:  document.getElementById('tab-history'),
+  add:      document.getElementById('tab-add'),
+  settings: document.getElementById('tab-settings')
+};
+const sections = {
+  home:     document.getElementById('home-section'),
+  history:  document.getElementById('history-section'),
+  add:      document.getElementById('add-section'),
+  settings: document.getElementById('settings-section')
+};
 
-addButton.addEventListener('click', () => {
-  formOverlay.classList.remove('hidden');
+function showSection(id) {
+  Object.values(sections).forEach(sec => sec.classList.add('hidden'));
+  Object.values(tabs).forEach(tab => tab.removeAttribute('aria-current'));
+  sections[id].classList.remove('hidden');
+  tabs[id].setAttribute('aria-current', 'page');
+}
+Object.keys(tabs).forEach(id =>
+  tabs[id].addEventListener('click', () => showSection(id))
+);
+
+// Cancel and Save logic for Add section
+const cancelAdd = document.getElementById('cancelAdd');
+const itemForm  = document.getElementById('itemForm');
+
+cancelAdd.addEventListener('click', () => showSection('home'));
+itemForm.addEventListener('submit', e => {
+  e.preventDefault();
+  // existing save logic here
+  showSection('home');
 });
-closeOverlay.addEventListener('click', () => {
-  formOverlay.classList.add('hidden');
-});
 
-(function(){
-  const cancelButton = document.getElementById('cancelButton');
-  const itemForm     = document.getElementById('itemForm');
-
-  cancelButton.addEventListener('click', () => {
-    formOverlay.classList.add('hidden');
-  });
-
-  itemForm.addEventListener('submit', e => {
-    e.preventDefault();
-    // …existing save logic here…
-    formOverlay.classList.add('hidden');
-  });
-})();
+// Initialize
+showSection('home');
+updateRecent();
