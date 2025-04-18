@@ -1,24 +1,20 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html.no-scroll, body {
-  height: 100%; overflow: hidden;
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
-}
 body {
   font-family: sans-serif;
   background: #f0f0f0;
   color: #222;
+  overflow: auto;
 }
 
-/* Header */
 .app-header {
-  background-color: #545bfe;
+  background: #545bfe;
   color: #fff;
   height: 56px;
   display: flex;
   align-items: center;
   padding: 0 16px;
-  position: fixed; top: 0; width: 100%;
+  position: fixed;
+  top: 0; width: 100%;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   z-index: 200;
 }
@@ -28,49 +24,33 @@ body {
 .hidden { display: none; }
 .placeholder { color: #666; font-style: italic; }
 
-/* Bottom Nav + FAB */
 .bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
+  position: fixed; bottom: 0; left: 0; right: 0;
   height: calc(60px + env(safe-area-inset-bottom));
   background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  display: flex; align-items: center; justify-content: space-around;
   padding-bottom: env(safe-area-inset-bottom);
   box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
   z-index: 100;
 }
-.bottom-nav .tab {
-  background: none; border: none;
-  font-size: 0.9rem; color: #777;
-  cursor: pointer;
-}
-.bottom-nav .tab[aria-current="page"] {
-  color: #000; font-weight: 600;
-}
-.bottom-nav .fab {
+.fab {
   position: absolute;
   bottom: calc(60px + 10px + env(safe-area-inset-bottom));
   left: 50%; transform: translateX(-50%);
-  width: 60px; height: 60px;
-  border-radius: 50%;
-  background: #6200ee; color: #fff;
-  font-size: 2rem;
+  width: 60px; height: 60px; border-radius: 50%;
+  background: #6200ee; color: #fff; font-size: 2rem;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  z-index: 101;
+  cursor: pointer; z-index: 101;
 }
 
-/* Main Sections */
 .section {
   padding: 72px 1rem calc(80px + env(safe-area-inset-bottom));
   margin-top: 56px;
   height: calc(100% - 56px - (60px + env(safe-area-inset-bottom)));
-  overflow-y: auto;
+  overflow: auto;
 }
 
-/* Cards */
 .item-list .card {
   background: #fff;
   border-radius: 8px;
@@ -79,30 +59,14 @@ body {
   position: relative;
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
-.item-title { font-weight: 600; }
-.item-meta  { font-size: 0.85rem; color: #555; margin-top: 4px; }
-.item-desc  { font-size: 0.9rem; color: #555; margin-top: 4px; }
-.item-list img {
-  max-width: 100%; margin-top: 8px; border-radius: 4px;
-}
 
-/* Edit/Delete icons */
-.card .actions {
-  position: absolute; top: 12px; right: 12px;
-  display: flex; gap: 8px;
-}
-.card .actions button {
+.close-btn {
+  position: absolute;
+  top: 8px; right: 8px;
   background: none; border: none;
-  padding: 4px; cursor: pointer;
-}
-.card .actions button img {
-  width: 20px; height: 20px; opacity: 0.7;
-}
-.card .actions button:hover img {
-  opacity: 1;
+  font-size: 1.5rem; cursor: pointer;
 }
 
-/* Overlay & Form */
 .overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.5);
@@ -112,29 +76,26 @@ body {
 .overlay-content {
   background: #fff;
   width: 90%; max-width: 400px;
-  padding: 1.5rem; border-radius: 8px;
+  padding: 1.5rem;
+  border-radius: 8px;
+  position: relative;
 }
 .overlay-content label {
   display: block; margin-bottom: 4px;
-  font-weight: 500; color: #333;
+  font-weight: 500;
 }
 .overlay-content input,
 .overlay-content select,
 .overlay-content textarea {
   width: 100%; padding: 0.5rem; margin-bottom: 1rem;
   border: 1px solid #ccc; border-radius: 4px;
-  font: inherit;
 }
+
 .form-actions {
-  display: flex; justify-content: flex-end; gap: 0.5rem;
+  display: flex; justify-content: flex-end;
 }
-.btn {
+.btn.primary {
+  background: #6200ee; color: #fff;
   padding: 0.5rem 1rem; border: none; border-radius: 4px;
-  cursor: pointer; font: inherit;
-}
-.btn.primary   { background: #6200ee; color: #fff; }
-.btn.secondary { background: transparent; color: #6200ee; border: 2px solid #6200ee; }
-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(98,0,238,0.5);
+  cursor: pointer;
 }
